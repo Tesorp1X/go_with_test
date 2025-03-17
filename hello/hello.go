@@ -20,7 +20,11 @@ func Hello(name, language string) string {
 	if name == "" {
 		name = "World"
 	}
-	var prefix string
+	prefix := getPrefix(language)
+	return prefix + name
+}
+
+func getPrefix(language string) (prefix string) {
 	switch language {
 	case german:
 		prefix = germanHelloPrefix
@@ -31,7 +35,7 @@ func Hello(name, language string) string {
 	default:
 		prefix = englishHelloPrefix
 	}
-	return prefix + name
+	return
 }
 
 func main() {
