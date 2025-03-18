@@ -1,6 +1,9 @@
 package structs
 
-import "testing"
+import (
+	"math"
+	"testing"
+)
 
 func TestPerimetr(t *testing.T) {
 	t.Run("rectangle", func(t *testing.T) {
@@ -13,7 +16,7 @@ func TestPerimetr(t *testing.T) {
 	t.Run("circle", func(t *testing.T) {
 		fig := Circle{10.0}
 		got := fig.Perimetr()
-		want := 2 * 10 * pi
+		want := 2 * 10 * math.Pi
 
 		assertCorrect(t, got, want)
 	})
@@ -30,7 +33,7 @@ func TestArea(t *testing.T) {
 	t.Run("circle", func(t *testing.T) {
 		fig := Circle{10.0}
 		got := fig.Area()
-		want := 10 * 10 * pi
+		want := 10 * 10 * math.Pi
 
 		assertCorrect(t, got, want)
 	})

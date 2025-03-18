@@ -1,6 +1,6 @@
 package structs
 
-const pi float64 = 3.1415
+import "math"
 
 type Rectangle struct {
 	Width  float64
@@ -20,9 +20,9 @@ type Circle struct {
 }
 
 func (c Circle) Perimetr() float64 {
-	return 2 * pi * c.Radius
+	return 2 * math.Pi * c.Radius
 }
 
 func (c Circle) Area() float64 {
-	return pi * c.Radius * c.Radius
+	return math.Pi * c.Radius * c.Radius
 }
