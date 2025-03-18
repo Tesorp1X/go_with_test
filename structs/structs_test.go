@@ -41,41 +41,52 @@ Depricated tests
 			assertCorrect(t, got, want)
 		})
 	}
-*/
-func assertCorrect(t testing.TB, got, want float64) {
-	if got != want {
-		t.Errorf("got %.2f want %.2f", got, want)
-	}
-}
 
+	func assertCorrect(t testing.TB, got, want float64) {
+		if got != want {
+			t.Errorf("got %.2f want %.2f", got, want)
+		}
+	}
+*/
 func TestAreaTT(t *testing.T) {
 	areaTests := []struct {
-		shape Shape
-		want  float64
+		name    string
+		shape   Shape
+		hasArea float64
 	}{
-		{shape: Rectangle{10.0, 20.0}, want: 200.0},
-		{shape: Circle{10.0}, want: 10 * 10 * math.Pi},
-		{shape: Triangle{4.0, 3.0, 5.0}, want: 6.0},
+		{name: "Rectangle", shape: Rectangle{Width: 10.0, Height: 20.0}, hasArea: 200.0},
+		{name: "Circle", shape: Circle{Radius: 10.0}, hasArea: 10 * 10 * math.Pi},
+		{name: "Triangle", shape: Triangle{a: 4.0, b: 3.0, c: 5.0}, hasArea: 6.0},
 	}
 
 	for _, tt := range areaTests {
-		got := tt.shape.Area()
-		assertCorrect(t, got, tt.want)
+		t.Run(tt.name, func(t *testing.T) {
+			got := tt.shape.Area()
+			if got != tt.hasArea {
+				t.Errorf("%#v got %.2f want %.2f", tt.shape, got, tt.hasArea)
+			}
+		})
 	}
 }
 
 func TestPerimetrTT(t *testing.T) {
 	perimetrTests := []struct {
-		shape Shape
-		want  float64
+		name        string
+		shape       Shape
+		hasPerimetr float64
 	}{
-		{shape: Rectangle{10.0, 20.0}, want: 60.0},
-		{shape: Circle{10.0}, want: 2 * 10 * math.Pi},
-		{shape: Triangle{4.0, 3.0, 5.0}, want: 12.0},
+		{name: "Rectangle", shape: Rectangle{Width: 10.0, Height: 20.0}, hasPerimetr: 60.0},
+		{name: "Circle", shape: Circle{Radius: 10.0}, hasPerimetr: 2 * 10 * math.Pi},
+		{name: "Triangle", shape: Triangle{a: 4.0, b: 3.0, c: 5.0}, hasPerimetr: 12.0},
 	}
 
 	for _, tt := range perimetrTests {
-		got := tt.shape.Perimetr()
-		assertCorrect(t, got, tt.want)
+		t.Run(tt.name, func(t *testing.T) {
+			got := tt.shape.Perimetr()
+			if got != tt.hasPerimetr {
+				t.Errorf("%#v got %.2f want %.2f", tt.shape, got, tt.hasPerimetr)
+			}
+		})
+
 	}
 }
