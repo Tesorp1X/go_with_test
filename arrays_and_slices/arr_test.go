@@ -60,6 +60,11 @@ func TestSumAllTails(t *testing.T) {
 		expected := []int{0, 9}
 		assertCorrect(t, got, expected)
 	})
+	t.Run("safely sums empty slises tails", func(t *testing.T) {
+		got := SumAllTails([]int{}, []int{0, 9})
+		expected := []int{0, 9}
+		assertCorrect(t, got, expected)
+	})
 }
 
 func assertCorrect(t testing.TB, got, expected []int) {
