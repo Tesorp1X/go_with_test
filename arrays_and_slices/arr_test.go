@@ -44,6 +44,24 @@ func TestSumAll(t *testing.T) {
 	})
 }
 
+func TestSumAllTails(t *testing.T) {
+	t.Run("slices of length 2", func(t *testing.T) {
+		got := SumAllTails([]int{1, 2}, []int{0, 9})
+		expected := []int{2, 9}
+		assertCorrect(t, got, expected)
+	})
+	t.Run("slices of any length", func(t *testing.T) {
+		got := SumAllTails([]int{1, 2, 3, 4}, []int{0, 9, 1})
+		expected := []int{9, 10}
+		assertCorrect(t, got, expected)
+	})
+	t.Run("slices of length 1", func(t *testing.T) {
+		got := SumAllTails([]int{1}, []int{0, 9})
+		expected := []int{0, 9}
+		assertCorrect(t, got, expected)
+	})
+}
+
 func assertCorrect(t testing.TB, got, expected []int) {
 	if !slices.Equal(got, expected) {
 		t.Errorf("got %v want %v", got, expected)
