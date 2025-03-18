@@ -21,7 +21,8 @@ func SumAllTails(numbresToSum ...[]int) []int {
 	var sums []int
 
 	for _, numbers := range numbresToSum {
-		sums = append(sums, Sum(numbers)-numbers[0])
+		tail := numbers[1:]
+		sums = append(sums, Sum(tail))
 	}
 
 	return sums
