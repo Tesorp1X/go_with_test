@@ -4,25 +4,15 @@ import (
 	"testing"
 )
 
+func assertBalance(t testing.TB, wallet Wallet, want Bitcoin) {
+	t.Helper()
+	got := wallet.Balance()
+	if got != want {
+		t.Errorf("got %s want %s", got, want)
+	}
+}
+
 func TestWallet(t *testing.T) {
-	assertBalance := func(t testing.TB, wallet Wallet, want Bitcoin) {
-		t.Helper()
-		got := wallet.Balance()
-		if got != want {
-			t.Errorf("got %s want %s", got, want)
-		}
-	}
-	assertError := func(t testing.TB, got error, want string) {
-		t.Helper()
-		if got == nil {
-			t.Fatal("wanted an error but didn't get one")
-		}
-
-		if got.Error() != want {
-			t.Errorf("got %q, want %q", got, want)
-		}
-	}
-
 	t.Run("one deposit", func(t *testing.T) {
 		wallet := Wallet{}
 		wallet.Deposit(Bitcoin(10))
@@ -36,20 +26,43 @@ func TestWallet(t *testing.T) {
 
 		assertBalance(t, wallet, Bitcoin(20))
 	})
-	t.Run("withdraw: no overdraft", func(t *testing.T) {
-		wallet := Wallet{balance: Bitcoin(20)}
-		err := wallet.Withdraw(Bitcoin(10))
-		if err == nil {
-			assertBalance(t, wallet, Bitcoin(10))
-		}
+}
 
-	})
-	t.Run("withdraw: overdraft scenario", func(t *testing.T) {
-		startingBalance := Bitcoin(20)
-		wallet := Wallet{startingBalance}
-		err := wallet.Withdraw(Bitcoin(100))
-
-		assertError(t, err, ErrInsufficientFunds.Error())
-		assertBalance(t, wallet, startingBalance)
-	})
+func TestWallet_Withdraw(t *testing.T) {
+	type args struct {
+		amount Bitcoin
+	}
+	tests := []struct {
+		name    string
+		w       *Wallet
+		args    args
+		want    Bitcoin
+		wantErr bool
+		err     string
+	}{
+		{
+			name:    "withdraw: no overdraft",
+			w:       &Wallet{Bitcoin(20)},
+			args:    args{amount: Bitcoin(10)},
+			want:    Bitcoin(10),
+			wantErr: false,
+			err:     "",
+		},
+		{
+			name:    "withdraw: overdraft scenario",
+			w:       &Wallet{Bitcoin(10)},
+			args:    args{amount: Bitcoin(20)},
+			want:    Bitcoin(10),
+			wantErr: true,
+			err:     ErrInsufficientFunds.Error(),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := tt.w.Withdraw(tt.args.amount); (err != nil) != tt.wantErr {
+				t.Errorf("Wallet.Withdraw() error = %v, wantErr %v", err, tt.err)
+			}
+			assertBalance(t, *tt.w, tt.want)
+		})
+	}
 }
