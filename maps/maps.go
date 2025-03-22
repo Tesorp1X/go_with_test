@@ -40,3 +40,11 @@ func (d Dictionary) Update(word, newDefinition string) error {
 	}
 	return ErrNoSuchWord
 }
+
+func (d Dictionary) Delete(word string) error {
+	if _, ok := d[word]; ok {
+		delete(d, word)
+		return nil
+	}
+	return ErrNoSuchWord
+}
