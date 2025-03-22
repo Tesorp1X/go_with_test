@@ -35,12 +35,11 @@ func assertDefinition(t testing.TB, dictionary Dictionary, word, definition stri
 
 func TestSearch(t *testing.T) {
 	t.Run("find existing word", func(t *testing.T) {
-		dictionary := Dictionary{"test": "this is just a test"}
+		word := "test"
+		definition := "this is just a test"
+		dictionary := Dictionary{word: definition}
 
-		got, err := dictionary.Search("test")
-		want := "this is just a test"
-		assertError(t, false, err, nil)
-		assertStrings(t, got, want)
+		assertDefinition(t, dictionary, word, definition)
 
 	})
 	t.Run("find non-existing word", func(t *testing.T) {
