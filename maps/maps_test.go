@@ -57,7 +57,8 @@ func TestAdd(t *testing.T) {
 		word := "test"
 		definition := "this is just a test"
 
-		dictionary.Add(word, definition)
+		err := dictionary.Add(word, definition)
+		assertError(t, false, err, nil)
 		assertDefinition(t, dictionary, word, definition)
 	})
 	t.Run("adding existing word", func(t *testing.T) {
@@ -65,7 +66,7 @@ func TestAdd(t *testing.T) {
 		definition := "this is just a test"
 		dictionary := Dictionary{word: definition}
 
-		_, err := dictionary.Add(word, "new line")
+		err := dictionary.Add(word, "new line")
 
 		assertError(t, true, err, ErrWordAlreadyExists)
 		assertDefinition(t, dictionary, word, definition)

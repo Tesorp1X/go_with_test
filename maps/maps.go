@@ -18,10 +18,15 @@ func (d Dictionary) Search(word string) (string, error) {
 	return "", ErrNoSuchWord
 }
 
-func (d Dictionary) Add(key, value string) (bool, error) {
-	if _, isPresent := d[key]; isPresent {
-		return false, ErrWordAlreadyExists
+func (d Dictionary) Add(key, value string) error {
+	_, err := d.Search(key)
+	switch err {
+	case ErrNoSuchWord:
+		d[key] = value
+	case nil:
+		return ErrWordAlreadyExists
+	default:
+		return err
 	}
-	d[key] = value
-	return true, nil
+	return nil
 }
