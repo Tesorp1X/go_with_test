@@ -32,3 +32,11 @@ func (d Dictionary) Add(key, value string) error {
 	}
 	return nil
 }
+
+func (d Dictionary) Update(word, newDefinition string) error {
+	if _, ok := d[word]; ok {
+		d[word] = newDefinition
+		return nil
+	}
+	return ErrNoSuchWord
+}
