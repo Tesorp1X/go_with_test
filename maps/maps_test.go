@@ -55,13 +55,11 @@ func TestSearch(t *testing.T) {
 func TestAdd(t *testing.T) {
 	t.Run("adding new word", func(t *testing.T) {
 		dictionary := Dictionary{}
+		word := "test"
+		definition := "this is just a test"
 
-		dictionary.Add("test", "this is just a test")
-		want := "this is just a test"
-		got, err := dictionary.Search("test")
-
-		assertError(t, false, err, nil)
-		assertStrings(t, got, want)
+		dictionary.Add(word, definition)
+		assertDefinition(t, dictionary, word, definition)
 	})
 	t.Run("adding existing word", func(t *testing.T) {
 		word := "test"
