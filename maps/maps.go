@@ -1,13 +1,15 @@
 package maps
 
-import (
-	"errors"
+var (
+	ErrNoSuchWord        = DictionaryError("error: no such word")
+	ErrWordAlreadyExists = DictionaryError("error: word is already in the dictionary")
 )
 
-var (
-	ErrNoSuchWord        = errors.New("error: no such word")
-	ErrWordAlreadyExists = errors.New("error: word is already in the dictionary")
-)
+type DictionaryError string
+
+func (e DictionaryError) Error() string {
+	return string(e)
+}
 
 type Dictionary map[string]string
 
