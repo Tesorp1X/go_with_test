@@ -92,3 +92,23 @@ func TestUpdate(t *testing.T) {
 		assertError(t, true, err, ErrNoSuchWord)
 	})
 }
+
+func TestDelete(t *testing.T) {
+	t.Run("remove existing word", func(t *testing.T) {
+		word := "test"
+		dictionaty := Dictionary{word: "old definition"}
+
+		err := dictionaty.Delete(word)
+		assertError(t, false, err, nil)
+
+		_, err = dictionaty.Search(word)
+		assertError(t, true, err, ErrNoSuchWord)
+	})
+	t.Run("remove non-existing word", func(t *testing.T) {
+		word := "test"
+		dictionaty := Dictionary{}
+
+		err := dictionaty.Delete(word)
+		assertError(t, true, err, ErrNoSuchWord)
+	})
+}
