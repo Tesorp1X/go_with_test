@@ -1,12 +1,18 @@
 package maps
 
 import (
-	"fmt"
+	"errors"
 )
 
-func Search(dictionary map[string]string, word string) (string, error) {
-	if val, ok := dictionary[word]; ok {
+var (
+	ErrNoSuchWord = errors.New("error: no such word")
+)
+
+type Dictionary map[string]string
+
+func (d Dictionary) Search(word string) (string, error) {
+	if val, ok := d[word]; ok {
 		return val, nil
 	}
-	return "", fmt.Errorf("error: couldn't find word %s", word)
+	return "", ErrNoSuchWord
 }
