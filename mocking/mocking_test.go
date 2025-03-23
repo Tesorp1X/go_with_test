@@ -1,7 +1,7 @@
 package mocking
 
 import (
-	"bytes"
+	"reflect"
 	"testing"
 )
 
@@ -13,22 +13,39 @@ func (s *SpySleeper) Sleep() {
 	s.Calls++
 }
 
+const (
+	sleep = "sleep"
+	write = "write"
+)
+
+type SpyCountdownOperations struct {
+	Calls []string
+}
+
+func (s *SpyCountdownOperations) Sleep() {
+	s.Calls = append(s.Calls, sleep)
+}
+
+func (s *SpyCountdownOperations) Write(p []byte) (n int, err error) {
+	s.Calls = append(s.Calls, write)
+	return
+}
+
 func TestCountdown(t *testing.T) {
-	buffer := &bytes.Buffer{}
-	spySleeper := &SpySleeper{}
+	spySleepPrinter := &SpyCountdownOperations{}
+	Countdown(spySleepPrinter, spySleepPrinter)
 
-	Countdown(buffer, spySleeper)
-
-	got := buffer.String()
-	want := `3
-2
-1
-Go!`
-
-	if got != want {
-		t.Errorf("got %q want %q", got, want)
+	want := []string{
+		write,
+		sleep,
+		write,
+		sleep,
+		write,
+		sleep,
+		write,
 	}
-	if spySleeper.Calls != 3 {
-		t.Errorf("not enough calls of Sleep(): expected 3, but got %q", spySleeper.Calls)
+
+	if !reflect.DeepEqual(want, spySleepPrinter.Calls) {
+		t.Errorf("wanted calls %v got %v", want, spySleepPrinter.Calls)
 	}
 }
