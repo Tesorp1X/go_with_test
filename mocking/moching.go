@@ -3,6 +3,7 @@ package mocking
 import (
 	"fmt"
 	"io"
+	"time"
 )
 
 const (
@@ -12,6 +13,15 @@ const (
 
 type Sleeper interface {
 	Sleep()
+}
+
+type ConfigurableSleeper struct {
+	duration time.Duration
+	sleep    func(time.Duration)
+}
+
+func (c *ConfigurableSleeper) Sleep() {
+	c.sleep(c.duration)
 }
 
 func Countdown(out io.Writer, sleeper Sleeper) {
