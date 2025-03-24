@@ -6,13 +6,8 @@ import (
 )
 
 func Racer(a, b string) (winner string) {
-	statrA := time.Now()
-	http.Get(a)
-	aDuration := time.Since(statrA)
-
-	statB := time.Now()
-	http.Get(b)
-	bDuration := time.Since(statB)
+	aDuration := measureDuration(a)
+	bDuration := measureDuration(b)
 
 	if aDuration < bDuration {
 		winner = a
@@ -21,4 +16,10 @@ func Racer(a, b string) (winner string) {
 	}
 
 	return
+}
+
+func measureDuration(url string) time.Duration {
+	statr := time.Now()
+	http.Get(url)
+	return time.Since(statr)
 }
