@@ -2,24 +2,22 @@ package pselect
 
 import (
 	"net/http"
-	"time"
 )
 
 func Racer(a, b string) (winner string) {
-	aDuration := measureDuration(a)
-	bDuration := measureDuration(b)
-
-	if aDuration < bDuration {
-		winner = a
-	} else {
-		winner = b
+	select {
+	case <-ping(a):
+		return a
+	case <-ping(b):
+		return b
 	}
-
-	return
 }
 
-func measureDuration(url string) time.Duration {
-	statr := time.Now()
-	http.Get(url)
-	return time.Since(statr)
+func ping(url string) chan struct{} {
+	ch := make(chan struct{})
+	go func() {
+		http.Get(url)
+		close(ch)
+	}()
+	return ch
 }
