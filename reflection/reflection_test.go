@@ -99,6 +99,16 @@ func TestWalk(t *testing.T) {
 			},
 			expectedCalls: []string{"three", "sechs"},
 		},
+		{
+			name: "x is an array of structs",
+			args: args{
+				[2]Charecteristics{
+					{1, 2, "three"},
+					{4, 5, "sechs"},
+				},
+			},
+			expectedCalls: []string{"three", "sechs"},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
