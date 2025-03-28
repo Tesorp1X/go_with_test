@@ -48,7 +48,7 @@ func TestWalk(t *testing.T) {
 			name: "no string fields",
 			args: args{
 				x: struct {
-					num int
+					Num int
 				}{
 					16,
 				},
