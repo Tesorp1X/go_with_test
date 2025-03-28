@@ -82,6 +82,13 @@ func TestWalk(t *testing.T) {
 			},
 			expectedCalls: []string{"Elder Titan", "Best Dota hero"},
 		},
+		{
+			name: "x is a pointer to struct",
+			args: args{
+				&Charecteristics{1415, 1155, "kinda old"},
+			},
+			expectedCalls: []string{"kinda old"},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
