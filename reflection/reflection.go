@@ -10,7 +10,7 @@ func walk(x any, fn func(string)) {
 		for i := range val.NumField() {
 			walk(val.Field(i).Interface(), fn)
 		}
-	case reflect.Slice:
+	case reflect.Slice, reflect.Array:
 		for i := range val.Len() {
 			walk(val.Index(i).Interface(), fn)
 		}
