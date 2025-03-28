@@ -5,27 +5,11 @@ import (
 	"testing"
 )
 
-/* func TestWalk(t *testing.T) {
-
-	expected := "Chris"
-	var got []string
-
-	x := struct {
-		Name string
-	}{expected}
-
-	walk(x, func(input string) {
-		got = append(got, input)
-	})
-
-	if len(got) != 1 {
-		t.Errorf("wrong number of function calls, got %d want %d", len(got), 1)
-	}
-
-	if got[0] != expected {
-		t.Errorf("got %q want %q", got[0], expected)
-	}
-} */
+type Charecteristics struct {
+	Age         int
+	HP          int
+	Description string
+}
 
 func TestWalk(t *testing.T) {
 	type args struct {
@@ -60,27 +44,44 @@ func TestWalk(t *testing.T) {
 			},
 			expectedCalls: []string{"Liz", "Chipi"},
 		},
-		/* 		{
-		   			name: "no string fields",
-		   			args: args{
-		   				x: struct {
-		   					num int
-		   				}{
-		   					16,
-		   				},
-		   			},
-		   			expectedCalls: []string{},
-		   		},
-		   		{
-		   			name: "one string, one non-string fueld",
-		   			args: args{
-		   				x: struct {
-		   					Name string
-		   					Age  int
-		   				}{"Liz", 24},
-		   			},
-		   			expectedCalls: []string{"Liz"},
-		   		}, */
+		{
+			name: "no string fields",
+			args: args{
+				x: struct {
+					num int
+				}{
+					16,
+				},
+			},
+			expectedCalls: []string(nil),
+		},
+		{
+			name: "one string, one non-string fueld",
+			args: args{
+				x: struct {
+					Name string
+					Age  int
+				}{"Liz", 24},
+			},
+			expectedCalls: []string{"Liz"},
+		},
+		{
+			name: "non-flat struct",
+			args: args{
+				struct {
+					Name            string
+					Charecteristics Charecteristics
+				}{
+					Name: "Elder Titan",
+					Charecteristics: Charecteristics{
+						14214214,
+						2800,
+						"Best Dota hero",
+					},
+				},
+			},
+			expectedCalls: []string{"Elder Titan", "Best Dota hero"},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
