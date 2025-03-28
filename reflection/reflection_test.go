@@ -89,6 +89,16 @@ func TestWalk(t *testing.T) {
 			},
 			expectedCalls: []string{"kinda old"},
 		},
+		{
+			name: "x is a slice of structs",
+			args: args{
+				[]Charecteristics{
+					{1, 2, "three"},
+					{4, 5, "sechs"},
+				},
+			},
+			expectedCalls: []string{"three", "sechs"},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
