@@ -3,16 +3,19 @@ package sync
 import "testing"
 
 func TestCounter(t *testing.T) {
-	counter := Counter{}
-	counter.Inc()
-	counter.Inc()
-	counter.Inc()
-	counter.Inc()
+	t.Run("non-concurretn test", func(t *testing.T) {
+		counter := Counter{}
+		counter.Inc()
+		counter.Inc()
+		counter.Inc()
+		counter.Inc()
 
-	got := counter.Value()
-	want := 4
+		assertCounter(t, counter, 4)
+	})
+}
 
-	if got != want {
+func assertCounter(t testing.TB, got Counter, want int) {
+	if got.Value() != want {
 		t.Errorf("got %d want %d", got, want)
 	}
 }
