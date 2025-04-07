@@ -121,4 +121,31 @@ func TestWalk(t *testing.T) {
 			}
 		})
 	}
+
+	t.Run("x is a map", func(t *testing.T) {
+		aMap := map[string]string{"1": "ein", "2": "zwei", "3": "drei"}
+		expectedCalls := []string{"ein", "zwei", "drei"}
+		var got []string
+		walk(aMap, func(input string) {
+			got = append(got, input)
+		})
+
+		for _, expCall := range expectedCalls {
+			assertContains(t, got, expCall)
+		}
+	})
+
+}
+
+func assertContains(t testing.TB, got []string, val string) {
+	t.Helper()
+	contains := false
+	for _, elem := range got {
+		if elem == val {
+			contains = true
+		}
+	}
+	if !contains {
+		t.Errorf("expected %v to contain %q but it didn't", got, val)
+	}
 }
