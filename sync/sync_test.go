@@ -7,18 +7,18 @@ import (
 
 func TestCounter(t *testing.T) {
 	t.Run("non-concurrent Counter test", func(t *testing.T) {
-		counter := Counter{}
+		counter := NewCounter()
 		counter.Inc()
 		counter.Inc()
 		counter.Inc()
 		counter.Inc()
 
-		assertCounter(t, &counter, 4)
+		assertCounter(t, counter, 4)
 	})
 
 	t.Run("concurrent Counter test", func(t *testing.T) {
 		wantedCount := 1000000
-		counter := Counter{}
+		counter := NewCounter()
 
 		var wg sync.WaitGroup
 		wg.Add(wantedCount)
@@ -32,7 +32,7 @@ func TestCounter(t *testing.T) {
 
 		wg.Wait()
 
-		assertCounter(t, &counter, wantedCount)
+		assertCounter(t, counter, wantedCount)
 	})
 }
 
