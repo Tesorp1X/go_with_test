@@ -1,9 +1,12 @@
 package sync
 
-import "testing"
+import (
+	"sync"
+	"testing"
+)
 
 func TestCounter(t *testing.T) {
-	t.Run("non-concurretn test", func(t *testing.T) {
+	t.Run("non-concurrent Counter test", func(t *testing.T) {
 		counter := Counter{}
 		counter.Inc()
 		counter.Inc()
@@ -11,6 +14,25 @@ func TestCounter(t *testing.T) {
 		counter.Inc()
 
 		assertCounter(t, counter, 4)
+	})
+
+	t.Run("concurrent Counter test", func(t *testing.T) {
+		wantedCount := 1000000
+		counter := Counter{}
+
+		var wg sync.WaitGroup
+		wg.Add(wantedCount)
+
+		for range wantedCount {
+			go func() {
+				counter.Inc()
+				wg.Done()
+			}()
+		}
+
+		wg.Wait()
+
+		assertCounter(t, counter, wantedCount)
 	})
 }
 
